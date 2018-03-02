@@ -1,0 +1,13 @@
+SELECT
+	RestaurantTable_Name,
+	RestaurantTable_People,
+	IIF (
+		RestaurantTable_Window = 1,
+		'¾aµ¡',
+		'¨S¾aµ¡'
+	) AS RestaurantTable_Window
+FROM
+	RestaurantTable
+WHERE
+	Restaurant_ID = @Restaurant_ID
+ORDER BY RestaurantTable_Name

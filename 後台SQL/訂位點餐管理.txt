@@ -1,0 +1,78 @@
+Grid第一層:
+SELECT
+	RV.Reservation_ID,
+	M.Member_ID,
+	M.Member_Name,
+	M.Member_Mobile,
+	Reservation_Peoplenumber,
+	FORMAT (
+		RV.Reservation_Date,
+		'D',
+		'zh-TW'
+	) AS Reservation_Date,
+	CONVERT (
+		CHAR (5),
+		RestaurantOrderTime_Time,
+		108
+	) AS RestaurantOrderTime_Time,
+	RestaurantTable_Name,
+	O.Total --少訂位狀態
+FROM
+	Reservation AS RV
+INNER JOIN Member AS M ON M.Member_ID = RV.Member_ID
+LEFT JOIN (
+	SELECT
+		Reservation_ID,
+		SUM (
+			dbo.FN_CalculateMemberOrder (Reservation_ID, Member_ID)
+		) AS Total
+	FROM
+		[Order]
+	GROUP BY
+		Reservation_ID
+) AS O ON RV.Reservation_ID = O.Reservation_ID
+WHERE RV.Restaurant_ID = @Restaurant_ID
+
+
+Grid第二層:
+SELECT
+	Reservation_ID,	
+	O.Member_ID,
+	Member_Name,
+	dbo.FN_TypeCode (
+		'Order_Paymentmethod',
+		Order_Paymentmethod
+	) AS Order_Paymentmethod,
+	Order_Check,
+	Order_Other,
+	Order_Earlyserving,
+	CONVERT (
+		CHAR (5),
+		Order_Earlyservingtime,
+		108
+	) AS Order_Earlyservingtime,
+	--這兩個欄位有點白痴
+		dbo.FN_CalculateMemberOrder (Reservation_ID, O.Member_ID) AS Total
+FROM
+	[Order] AS O
+INNER JOIN Member AS M ON M.Member_ID = O.Member_ID
+WHERE
+	Reservation_ID = @Reservation_ID 
+
+Grid 第三層:
+SELECT
+	Reservation_ID,
+	Member_ID,
+	Meal_Name,
+	Meal_Price,
+	Orderdetail_Quantity,
+	Orderdetail_Other
+FROM
+	Orderdetail AS OD
+INNER JOIN Meal AS M ON M.Meal_ID = OD.Meal_ID
+WHERE
+	Reservation_ID = @Reservation_ID 
+AND Member_ID = @Member_ID 
+ORDER BY
+	MealClassification_ID,
+	M.Meal_ID

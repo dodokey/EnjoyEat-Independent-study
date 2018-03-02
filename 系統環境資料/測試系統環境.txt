@@ -1,0 +1,10 @@
+AWS EC2 Windows Server 2012
+Computer: ec2-52-192-14-20.ap-northeast-1.compute.amazonaws.com
+User Name: Administrator
+PassWord: !KMR4aUH*gU
+
+
+AWS RDS
+Server Name: enjoyeat.ckxp2ozdi4mk.ap-northeast-1.rds.amazonaws.com
+User Name: enjoyeatadmin
+Password: Kuasmis101

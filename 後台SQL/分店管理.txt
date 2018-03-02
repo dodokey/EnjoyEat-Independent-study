@@ -1,0 +1,16 @@
+SELECT
+	Restaurant_BranchName,
+	Region_Name,
+	Restaurant_Address,
+	dbo.FN_Phone_Formate (
+		Restaurant_Telephonearea,
+		Restaurant_Telephone,
+		''
+	) AS Restaurant_Telephone,
+	Restaurant_Capacity
+FROM
+	Restaurant
+INNER JOIN Region ON Restaurant.Region_ID = Region.Region_ID
+WHERE
+	Company_ID = @Company_ID 
+ORDER BY Restaurant.Region_ID

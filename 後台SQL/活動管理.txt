@@ -1,0 +1,13 @@
+SELECT
+	RestaurantActivity_Title,
+	RestaurantActivity_Content,
+	RestaurantActivity_Picture,
+	RestaurantActivity_Other,
+	FORMAT( RestaurantActivity_Startdatetime, 'f', 'zh-TW') AS RestaurantActivity_Startdatetime, 
+	FORMAT( RestaurantActivity_Enddatetime,'f', 'zh-TW') AS RestaurantActivity_Enddatetime,
+	FORMAT( RestaurantActivity_Datetime,'f', 'zh-TW') AS RestaurantActivity_Datetime
+FROM
+	RestaurantActivity
+WHERE
+	Company_ID = @Company_ID 
+ORDER BY RestaurantActivity_Datetime

@@ -1,0 +1,48 @@
+SELECT
+	Restaurant_Name,
+	Restaurant_BranchName,
+	Restaurant_Addresszip + ' ' + Restaurant_Address AS Restaurant_Address,	
+	dbo.FN_Phone_Formate (
+		Restaurant_Telephonearea,
+		Restaurant_Telephone,
+		''
+	) AS Restaurant_Telephone,
+	Restaurant_Officialwebsite,
+	Restaurant_Businehoursmorningbegin,
+	Restaurant_Businehoursmorningend,
+	Restaurant_Businehoursnoonbegin,
+	Restaurant_Businehoursnoonend,
+	Restaurant_Businehoursnightbegin,
+	Restaurant_Businehoursnightend,
+	Restaurant_Capacity,
+	IIF (
+		Restaurant_Parking = 1,
+		'有',
+		'無'
+	) AS Restaurant_Parking,
+	IIF (
+		Restaurant_Creditcard = 1,
+		'提供',
+		'不提供'
+	) AS Restaurant_Creditcard,
+	IIF (
+		Restaurant_Accessible = 1,
+		'有',
+		'無'
+	) AS Restaurant_Accessible,
+	IIF (
+		Restaurant_Wifi = 1,
+		'有',
+		'無'
+	) AS Restaurant_Wifi,
+	dbo.FN_Money_Formate (Restaurant_Costmax) AS Restaurant_Costmax,
+	dbo.FN_Money_Formate (Restaurant_Costmin) AS Restaurant_Costmin,
+	dbo.FN_Money_Formate (Restaurant_Costavg) AS Restaurant_Costavg,
+	dbo.FN_Money_Formate (Restaurant_Mincharge) AS Restaurant_Mincharge,
+	dbo.FN_RestaurantClassification (Restaurant.Restaurant_ID) AS RestaurantClassification_Name,
+	Restaurant_Summary,
+	Restaurant_Trafficinformation
+FROM
+	Restaurant
+WHERE
+	Restaurant_ID = @Restaurant_ID 

@@ -1,0 +1,21 @@
+SELECT
+	Meal_Name,
+	Meal_EName,
+	MealClassification_Name,
+	Meal_Picture,
+	Meal_Summary,
+	dbo.FN_Money_Formate (Meal_Price) AS Meal_Price,
+	IIF (
+		Meal_Vegetarian = 1,
+		'¯À­¹',
+		'¸§­¹'
+	) AS Meal_Vegetarian,
+	Meal_Spicy,
+	Meal_Caloric,
+	Meal_Recipe,
+	Meal_Recommendation
+FROM
+	Meal
+LEFT JOIN MealClassification ON MealClassification.MealClassification_ID = Meal.MealClassification_ID
+WHERE
+	Restaurant_ID = @Restaurant_ID 
